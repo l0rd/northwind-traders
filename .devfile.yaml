@@ -41,10 +41,12 @@ commands:
   - id: quarkus-dev
     exec:
       component: tools
-      commandLine: 'source /home/user/.bashrc && mvn quarkus:dev'
+      commandLine: |
+        source /home/user/.bashrc && java -version && pwd && mvn quarkus:dev
       workingDir: ${PROJECT_SOURCE}/northwind
   - id: run-dev-env
     exec:
       component: tools
-      commandLine: 'source /home/user/.bashrc && mvn oc:remote-dev'
+      commandLine: |
+        source /home/user/.bashrc && java -version && pwd && mvn mvn oc:remote-dev
       workingDir: ${PROJECT_SOURCE}/northwind
