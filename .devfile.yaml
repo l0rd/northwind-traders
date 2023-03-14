@@ -37,7 +37,7 @@ commands:
     exec:
       label: "1. Package"
       component: tools
-      workingDir: ${PROJECTS_ROOT}
+      workingDir: ${PROJECT_SOURCE}
       commandLine: |
         source /home/user/.bashrc && mvn clean package
       group:
