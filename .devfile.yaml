@@ -35,18 +35,22 @@ components:
 commands:
   - id: deploy
     exec:
+      label: "1. Deploy"
       component: tools
-      commandLine: 'source /home/user/.bashrc && ./deploy-to-openshift.sh'
+      commandLine: |
+        source /home/user/.bashrc && ./deploy-to-openshift.sh
       workingDir: ${PROJECT_SOURCE}
   - id: quarkus-dev
     exec:
+      label: "2. Start Development Mode"
       component: tools
       commandLine: |
-        source /home/user/.bashrc && java -version && pwd && mvn quarkus:dev
+        source /home/user/.bashrc && mvn quarkus:dev
       workingDir: ${PROJECT_SOURCE}/northwind
   - id: run-dev-env
     exec:
+      label: "3. Run Development Environment"
       component: tools
       commandLine: |
-        source /home/user/.bashrc && java -version && pwd && mvn mvn oc:remote-dev
+        source /home/user/.bashrc && mvn oc:remote-dev
       workingDir: ${PROJECT_SOURCE}/northwind
