@@ -48,7 +48,9 @@ commands:
       label: "2. Deploy"
       component: tools
       commandLine: |
-        source /home/user/.bashrc && ./deploy-to-openshift.sh
+        source /home/user/.bashrc && \
+        oc project $(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace) && \
+        ./deploy-to-openshift.sh
       workingDir: ${PROJECT_SOURCE}
   - id: quarkus-dev
     exec:
