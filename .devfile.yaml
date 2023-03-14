@@ -33,24 +33,37 @@ components:
     volume:
       size: 1G
 commands:
+  - id: package
+    exec:
+      label: "1. Package"
+      component: tools
+      workingDir: ${PROJECTS_ROOT}
+      commandLine: |
+        source /home/user/.bashrc && mvn clean package
+      group:
+        kind: build
+        isDefault: true
   - id: deploy
     exec:
-      label: "1. Deploy"
+      label: "2. Deploy"
       component: tools
       commandLine: |
         source /home/user/.bashrc && ./deploy-to-openshift.sh
       workingDir: ${PROJECT_SOURCE}
   - id: quarkus-dev
     exec:
-      label: "2. Start Development Mode"
+      label: "3. Start Development Mode"
       component: tools
       commandLine: |
         source /home/user/.bashrc && mvn quarkus:dev
       workingDir: ${PROJECT_SOURCE}/northwind
   - id: run-dev-env
     exec:
-      label: "3. Run Development Environment"
+      label: "4. Run Development Environment"
       component: tools
       commandLine: |
         source /home/user/.bashrc && mvn oc:remote-dev
       workingDir: ${PROJECT_SOURCE}/northwind
+events:
+  postStart:
+    - package
