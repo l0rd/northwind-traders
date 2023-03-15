@@ -28,10 +28,46 @@ components:
       memoryLimit: 6G
       cpuRequest: 1000m
       cpuLimit: 4000m
-      mountSources: true
-  - name: m2
-    volume:
-      size: 1G
+  - name: northwind-db
+    container:
+      image: bitnami/postgresql:14.5.0
+      commands: ['/bin/sh', '-c', 'pg_isready -U ${POSTGRESQL_USERNAME}']
+      env:
+        - name: POSTGRESQL_USERNAME
+          value: jkube
+        - name: POSTGRESQL_PASSWORD
+          value: pa33word
+      endpoints:
+        - exposure: internal
+          name: northwind-db
+          protocol: tcp
+          targetPort: 5432
+      memoryRequest: 500Mi
+      memoryLimit: 4G
+      cpuRequest: 500m
+      cpuLimit: 2000m
+      mountSources: false
+  - name: rabbit-mq
+    container:
+      image: rabbitmq:3.11-management
+      env:
+        - name: RABBITMQ_DEFAULT_USER
+          value: jkube
+        - name: RABBITMQ_DEFAULT_PASS
+          value: pa33word
+      endpoints:
+        - exposure: internal
+          name: rabbit-mq
+          protocol: tcp
+          targetPort: 5672
+        - exposure: internal
+          name: rabbit-mq-management
+          protocol: tcp
+          targetPort: 15672
+      memoryRequest: 500Mi
+      memoryLimit: 4G
+      cpuRequest: 500m
+      cpuLimit: 2000m
 commands:
   - id: package
     exec:
@@ -50,7 +86,7 @@ commands:
       commandLine: |
         source /home/user/.bashrc && \
         oc project $(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace) && \
-        ./deploy-to-openshift.sh
+        mvn clean package oc:build oc:resource oc:apply
       workingDir: ${PROJECT_SOURCE}
   - id: quarkus-dev
     exec:

@@ -78,6 +78,11 @@
               </remoteService>
             </remoteServices>
           </remoteDevelopment>
+          <images>
+            <image>
+              <name>quay.io/mloriedo/northwind-traders-mail:latest</name>
+            </image>
+          </images>
         </configuration>
       </plugin>
       <plugin>
